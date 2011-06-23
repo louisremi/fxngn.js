@@ -4,6 +4,7 @@ function onload() {
 		statsDiv = document.getElementById("stats"),
 		scene = document.getElementById("scene"),
 		canvas = document.getElementById("canvas"),
+		style = document.getElementById("sceneStyle"), 
 		ctx = canvas.getContext("2d"),
 		img = new Image(),
 		transform = {
@@ -33,23 +34,22 @@ function onload() {
 
 	}
 
-	Fx.utils.push(function stats( dT, now ) {
+	Fx.run([
+			stats
+		, spawnStyle
+		, animStyle
+		, renderStyleTransformRounded
+	]);
+	
+	function stats( dT, now ) {
 		var sec = now - before;
 		frames++;
 		if ( sec >= 1000 ) {
-			statsDiv.innerHTML = "fps: " + ( (frames / sec * 1000) |0) + "<br/>elems: " + (Fx.elems.length);
+			statsDiv.innerHTML = "fps: " + ( (frames / sec * 1000) |0) + "<br/>elems: " + (scene.childNodes.length);
 			before = now;
 			frames = sec = 0;
 		}
-	});
-
-	Fx.utils.push(spawnDOMTransform);
-	
-	Fx.utils.push(animDOMTransform);
-	
-	//Fx.utils.push(renderHTMLTransformRounded);
-
-	Fx.run();
+	}
 	
 	function spawn() {
 		Fx.elems.push({
@@ -63,14 +63,15 @@ function onload() {
 	}
 	
 	function anim( dT ) {
-		var i = Fx.elems.length,
+		var elems = Fx.elems,
+			i = elems.length,
 			dX = 50 / 1000 * dT,
 			anim, val;
 		while ( i-- ) {
-			anim = Fx.elems[i];
+			anim = elems[i];
 			val = anim.style.left += dX;
 			if ( val > 590 ) {
-				Fx.elems.splice(i, 1);
+				elems.splice(i, 1);
 			}
 		}
 	}
@@ -111,18 +112,19 @@ function onload() {
 	 * Firefox: 480p @25fps
 	 */
 	function animDOM( dT ) {
-		var i = Fx.elems.length,
+		var elems = Fx.elems,
+			i = elems.length,
 			dX = 50 / 1000 * dT,
 			elem, node, val;
 		while ( i-- ) {
-			elem = Fx.elems[i];
+			elem = elems[i];
 			node = elem.node;
 			val = elem.style.left += dX;
 			node.style.left = val + "px";
 			node.style.top = elem.style.top + "px";
 			if ( val > 590 ) {
 				scene.removeChild(node);
-				Fx.elems.splice(i, 1);
+				elems.splice(i, 1);
 			}
 		}
 	}
@@ -131,18 +133,19 @@ function onload() {
 	 * Firefox: 500p @25fps
 	 */
 	function animDOMRounded( dT ) {
-		var i = Fx.elems.length,
+		var elems = Fx.elems,
+			i = elems.length,
 			dX = 50 / 1000 * dT,
 			elem, node, val;
 		while ( i-- ) {
-			elem = Fx.elems[i];
+			elem = elems[i];
 			node = elem.node;
 			val = elem.style.left += dX;
 			node.style.left = ((val +.5) |0) + "px";
 			node.style.top = elem.style.top + "px";
 			if ( val > 590 ) {
 				scene.removeChild(node);
-				Fx.elems.splice(i, 1);
+				elems.splice(i, 1);
 			}
 		}
 	}
@@ -151,18 +154,19 @@ function onload() {
 	 * Firefox: 280p @24fps
 	 */
 	function animDOMTransform( dT ) {
-		var i = Fx.elems.length,
+		var elems = Fx.elems,
+			i = elems.length,
 			dX = 50 / 1000 * dT,
 			elem, node, val,
 			trans = transform;
 		while ( i-- ) {
-			elem = Fx.elems[i];
+			elem = elems[i];
 			node = elem.node;
 			val = elem.style.left += dX;
 			node.style[trans.camel] = "translate("+ val + "px," + elem.style.top + "px)";
 			if ( val > 590 ) {
 				scene.removeChild(node);
-				Fx.elems.splice(i, 1);
+				elems.splice(i, 1);
 			}
 		}
 	}
@@ -171,18 +175,19 @@ function onload() {
 	 * Firefox: 280p @24fps
 	 */
 	function animDOMTransformRounded( dT ) {
-		var i = Fx.elems.length,
+		var elems = Fx.elems,
+			i = elems.length,
 			dX = 50 / 1000 * dT,
 			elem, node, val,
 			trans = transform;
 		while ( i-- ) {
-			elem = Fx.elems[i];
+			elem = elems[i];
 			node = elem.node;
 			val = elem.style.left += dX;
 			node.style[trans.camel] = "translate("+ ((val +.5) |0) + "px," + ((elem.style.top +.5) |0) + "px)";
 			if ( val > 590 ) {
 				scene.removeChild(node);
-				Fx.elems.splice(i, 1);
+				elems.splice(i, 1);
 			}
 		}
 	}
@@ -217,9 +222,6 @@ function onload() {
 		scene.innerHTML = html;
 	}
 	
-	/* Chrome: 417 @35fps
-	 * Firefox: 290p @24fps
-	 */
 	/* Chrome: 444p @37fps
 	 * Firefox: 290p @24fps
 	 */
@@ -290,5 +292,100 @@ function onload() {
 			elem = elems[i];
 			_ctx.drawImage(_img, ((elem.style.left +.5) |0), ((elem.style.top +.5) |0));
 		}
+	}
+	
+	function spawnStyle() {
+		var elem = {
+				style: {
+					width: 10,
+					height: 10,
+					top: Math.random() * 390,
+					left: 0
+				},
+				node: document.createElement("div"),
+				id: Math.random() * 1E9 |0
+			};
+		elem.node.id = "elem" + elem.id;
+		Fx.elems.push(elem);
+		scene.appendChild(elem.node);
+	}
+	
+	function animStyle( dT ) {
+		var elems = Fx.elems,
+			i = elems.length,
+			dX = 50 / 1000 * dT,
+			elem, val;
+		while ( i-- ) {
+			elem = elems[i];
+			val = elem.style.left += dX;
+			if ( val > 590 ) {
+				elems.splice(i, 1);
+				scene.removeChild(elem.node);
+			}
+		}
+	}
+	
+	/* Chrome: 480p @41fps
+	 * Firefox: 400p @33fps
+	 */
+	function renderStyle() {
+		var styleStr = "",
+			elems = Fx.elems,
+			i = elems.length,
+			elem;
+		while ( i-- ) {
+			elem = elems[i];
+			styleStr += "#elem" + elem.id + "{left:" + elem.style.left + "px;top:" + elem.style.top + "px;}\n";
+		}
+		style.innerHTML = styleStr;
+	}
+	
+	/* Chrome: 510p @43fps
+	 * Firefox: 215p @10fps
+	 */
+	function renderStyleRounded() {
+		var styleStr = "",
+			elems = Fx.elems,
+			i = elems.length,
+			elem;
+		while ( i-- ) {
+			elem = elems[i];
+			styleStr += "#elem" + elem.id + "{left:" + ((elem.style.left +.5) |0) + "px;top:" + ((elem.style.top +.5) |0) + "px;}\n";
+		}
+		style.innerHTML = styleStr;
+	}
+
+	/* Chrome: 430p @36fps
+	 * Firefox: 
+	 */
+	function renderStyleTransform() {
+		var styleStr = "",
+			elems = Fx.elems,
+			i = elems.length,
+			elem,
+			trans = transform,
+			tmp = '{' + trans.propPrefix + 'transform:translate(';
+		while ( i-- ) {
+			elem = elems[i];
+			styleStr += "#elem" + elem.id + tmp + elem.style.left + "px," + elem.style.top + "px);}\n";
+		}
+		style.innerHTML = styleStr;
+	}
+	
+	/* Chrome: 340p @29fps
+	 * Firefox: 
+	 */
+	function renderStyleTransformRounded() {
+		var styleStr = "",
+			elems = Fx.elems,
+			i = elems.length,
+			elem,
+			trans = transform,
+			tmp = '{' + trans.propPrefix + 'transform:translate(';
+		while ( i-- ) {
+			elem = elems[i];
+			styleStr += "#elem" + elem.id + tmp + ((elem.style.left +.5) |0) + "px," + ((elem.style.top +.5) |0) + "px);}\n";
+		}
+		style.innerHTML = styleStr;
 	}
 }

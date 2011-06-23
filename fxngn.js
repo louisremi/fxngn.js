@@ -1,8 +1,9 @@
 (function(window, document, Math, Date, undefined) {
 
 var fx = {
-	run: function() {
+	run: function( utils ) {
 		this.before = Date.now();
+		this.utils = utils;
 		var self = this,
 			requestAnimationFrame = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 
@@ -28,8 +29,7 @@ var fx = {
 		this.before = now;
 	},
 	utils: [],
-	elems: [],
-	anims: []
+	elems: []
 }
 
 window.Fx = fx;
