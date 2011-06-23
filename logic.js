@@ -232,8 +232,8 @@ function onload() {
 			i = elems.length,
 			elem,
 			htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
-			separator = trans.translateUnit + ',';
-			htmlSuffix = trans.translateUnit + ')"></div>';
+			separator = 'px,';
+			htmlSuffix = 'px)"></div>';
 		while ( i-- ) {
 			elem = elems[i];
 			html +=  htmlPrefix + elem.style.left + separator + elem.style.top + htmlSuffix;
@@ -251,8 +251,8 @@ function onload() {
 			i = elems.length,
 			elem,
 			htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
-			separator = trans.translateUnit + ',';
-			htmlSuffix = trans.translateUnit + ')"></div>';
+			separator = 'px,';
+			htmlSuffix = 'px)"></div>';
 		while ( i-- ) {
 			elem = elems[i];
 			html +=  htmlPrefix + ((elem.style.left +.5) |0) + separator + ((elem.style.top +.5) |0) + htmlSuffix;
