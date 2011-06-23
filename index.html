@@ -15,161 +15,20 @@
 	width: 10px;
 	height: 10px;
 }
+
+#canvas {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	border: 1px solid black;
+}
 </style>
 </head>
 <body onload="onload()">
 <div id="scene"></div>
+<canvas id="canvas" width="600" height="400"></canvas>
 <div id="stats"></div>
 <script src="fxngn.js"></script>
-<script>
-function onload() {
-	var before = Date.now(),
-		frames = 0,
-		statsDiv = document.getElementById("stats"),
-		scene = document.getElementById("scene");
-
-	Fx.utils.push(function stats( dT, now ) {
-		var sec = now - before;
-		frames++;
-		if ( sec >= 1000 ) {
-			statsDiv.innerHTML = "fps: " + ( (frames / sec * 1000) |0) + "<br/>elems: " + (Fx.elems.length);
-			before = now;
-			frames = sec = 0;
-		}
-	});
-
-	Fx.utils.push(function spawn() {
-		Fx.elems.push({
-			style: {
-				width: 10,
-				height: 10,
-				top: Math.random() * 390,
-				left: 0
-			}
-		});
-	});
-	
-	Fx.utils.push(function anim( dT ) {
-		var i = Fx.elems.length,
-			dX = 50 / 1000 * dT,
-			anim, val;
-		while ( i-- ) {
-			anim = Fx.elems[i];
-			val = anim.style.left += dX;
-			if ( val > 590 ) {
-				Fx.elems.splice(i, 1);
-			}
-		}
-	});
-	
-	Fx.utils.push(renderRounded);
-
-	Fx.run();
-	
-	/* Chrome: 480p @40fps
-	 * Firefox: 
-	 */
-	function render() {
-		var html = "",
-			elems = Fx.elems,
-			i = elems.length,
-			elem;
-		while ( i-- ) {
-			elem = elems[i];
-			html += '<div style="top:'+elem.style.top+'px;left:'+elem.style.left+'px"></div>';
-		}
-		scene.innerHTML = html;
-	}
-	
-	/* Chrome: 510p @42fps
-	 * Firefox: 
-	 */
-	function renderRound() {
-		var html = "",
-			elems = Fx.elems,
-			i = elems.length,
-			elem;
-		while ( i-- ) {
-			elem = elems[i];
-			html += '<div style="top:'+Math.round(elem.style.top)+'px;left:'+Math.round(elem.style.left)+'px"></div>';
-		}
-		scene.innerHTML = html;
-	}
-	
-	/* Chrome: 510p @42fps
-	 * Firefox: 
-	 */
-	function renderRounded() {
-		var html = "",
-			elems = Fx.elems,
-			i = elems.length,
-			elem;
-		while ( i-- ) {
-			elem = elems[i];
-			html += '<div style="top:'+((elem.style.top +.5) |0)+'px;left:'+((elem.style.left +.5) |0)+'px"></div>';
-		}
-		scene.innerHTML = html;
-	}
-	
-	/*function renderRoundedThis( dT, now ) {
-		var html = "",
-			i = this.elems.length,
-			elem;
-		while ( i-- ) {
-			elem = this.elems[i];
-			html += '<div style="top:'+((elem.style.top +.5) |0)+'px;left:'+((elem.style.left +.5) |0)+'px"></div>';
-		}
-		this.scene.innerHTML = html;
-	}*/
-	
-	function renderMozTransform() {
-		var html = "",
-			elems = Fx.elems,
-			i = elems.length,
-			elem;
-		while ( i-- ) {
-			elem = elems[i];
-			html += '<div style="-moz-transform:matrix(1,0,0,1,'+elem.style.left+'px,'+elem.style.top+'px)"></div>';
-		}
-		scene.innerHTML = html;
-	}
-	
-	function renderMozTransformRounded() {
-		var html = "",
-			elems = Fx.elems,
-			i = elems.length,
-			elem;
-		while ( i-- ) {
-			elem = elems[i];
-			html += '<div style="-moz-transform:matrix(1,0,0,1,'+((elem.style.left +.5) |0)+'px,'+((elem.style.top +.5) |0)+'px)"></div>';
-		}
-		scene.innerHTML = html;
-	}
-	
-	function renderWebkitTransform() {
-		var html = "",
-			elems = Fx.elems,
-			i = elems.length,
-			elem;
-		while ( i-- ) {
-			elem = elems[i];
-			html += '<div style="-webkit-transform:matrix(1,0,0,1,'+elem.style.left+','+elem.style.top+')"></div>';
-		}
-		scene.innerHTML = html;
-	}
-	
-	function renderWebkitTransformRounded() {
-		var html = "",
-			elems = Fx.elems,
-			i = elems.length,
-			elem;
-		while ( i-- ) {
-			elem = elems[i];
-			html += '<div style="-webkit-transform:matrix(1,0,0,1,'+((elem.style.left +.5) |0)+','+((elem.style.top +.5) |0)+')"></div>';
-		}
-		scene.innerHTML = html;
-	}
-}
-</script>
+<script src="logic.js"></script>
 </body>
 </html>
