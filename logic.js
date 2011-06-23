@@ -7,6 +7,7 @@ function onload() {
 		style = document.getElementById("sceneStyle"), 
 		ctx = canvas.getContext("2d"),
 		img = new Image(),
+		speedD = 100,
 		transform = {
 			propPrefix: "",
 			camel: "transform"
@@ -36,9 +37,9 @@ function onload() {
 
 	Fx.run([
 			stats
-		, spawnStyle
-		, animStyle
-		, renderStyleTransformRounded
+		, spawn
+		, anim
+		, renderHTML
 	]);
 	
 	function stats( dT, now ) {
@@ -56,21 +57,23 @@ function onload() {
 			style: {
 				width: 10,
 				height: 10,
-				top: Math.random() * 390,
-				left: 0
-			}
+				top: 295,
+				left: 395
+			},
+			speedX: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1),
+			speedY: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1)
 		});
 	}
 	
 	function anim( dT ) {
 		var elems = Fx.elems,
 			i = elems.length,
-			dX = 50 / 1000 * dT,
-			anim, val;
+			elem, x, y;
 		while ( i-- ) {
-			anim = elems[i];
-			val = anim.style.left += dX;
-			if ( val > 590 ) {
+			elem = elems[i];
+			x = elem.style.left += elem.speedX / 1000 * dT;
+			y = elem.style.top += elem.speedY / 1000 * dT;
+			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				elems.splice(i, 1);
 			}
 		}
@@ -82,7 +85,7 @@ function onload() {
 				style: {
 					width: 10,
 					height: 10,
-					top: Math.random() * 390,
+					top: Math.random() * 590,
 					left: 0
 				},
 				node: node
@@ -98,7 +101,7 @@ function onload() {
 				style: {
 					width: 10,
 					height: 10,
-					top: Math.random() * 390,
+					top: Math.random() * 590,
 					left: 0
 				},
 				node: node
@@ -232,8 +235,8 @@ function onload() {
 			i = elems.length,
 			elem,
 			htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
-			separator = trans.translateUnit + ',';
-			htmlSuffix = trans.translateUnit + ')"></div>';
+			separator = 'px,';
+			htmlSuffix = 'px)"></div>';
 		while ( i-- ) {
 			elem = elems[i];
 			html +=  htmlPrefix + elem.style.left + separator + elem.style.top + htmlSuffix;
@@ -251,8 +254,8 @@ function onload() {
 			i = elems.length,
 			elem,
 			htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
-			separator = trans.translateUnit + ',';
-			htmlSuffix = trans.translateUnit + ')"></div>';
+			separator = 'px,';
+			htmlSuffix = 'px)"></div>';
 		while ( i-- ) {
 			elem = elems[i];
 			html +=  htmlPrefix + ((elem.style.left +.5) |0) + separator + ((elem.style.top +.5) |0) + htmlSuffix;
