@@ -36,9 +36,8 @@ function onload() {
 
 	Fx.run([
 			stats
-		, spawnStyle
-		, animStyle
-		, renderStyleTransformRounded
+		, animDOMTransform
+		, spawnDOM
 	]);
 	
 	function stats( dT, now ) {
@@ -88,23 +87,6 @@ function onload() {
 				node: node
 			};
 		Fx.elems.push(elem);
-		node.style.top = elem.style.top + "px";
-		scene.appendChild(node);
-	}
-	
-	function spawnDOMTransform() {
-		var node = document.createElement("div"), 
-			elem = {
-				style: {
-					width: 10,
-					height: 10,
-					top: Math.random() * 390,
-					left: 0
-				},
-				node: node
-			};
-		Fx.elems.push(elem);
-		node.style[transform.camel] = "translate(0px," + elem.style.top +"px)";
 		scene.appendChild(node);
 	}
 	
