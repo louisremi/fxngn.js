@@ -95,8 +95,8 @@ function onload() {
 		scene.appendChild(elem.node);
 	}
 	
-	/* Chrome: 870p @44fps
-	 * Firefox: 480p @25fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function animDOM( dT ) {
 		var elems = Fx.elems,
@@ -116,8 +116,8 @@ function onload() {
 		}
 	}
 	
-	/* Chrome: 920p @46fps
-	 * Firefox: 500p @25fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function animDOMRounded( dT ) {
 		var elems = Fx.elems,
@@ -137,8 +137,8 @@ function onload() {
 		}
 	}
 	
-	/* Chrome: 510p @44fps
-	 * Firefox: 280p @24fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function animDOMTransform( dT ) {
 		var elems = Fx.elems,
@@ -158,8 +158,8 @@ function onload() {
 		}
 	}
 	
-	/* Chrome: 550p @45fps
-	 * Firefox: 280p @24fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function animDOMTransformRounded( dT ) {
 		var elems = Fx.elems,
@@ -179,7 +179,7 @@ function onload() {
 		}
 	}
 	
-	/* Chrome: 480p @40fps
+	/* Chrome:
 	 * Firefox: 
 	 */
 	function renderHTML() {
@@ -194,7 +194,7 @@ function onload() {
 		scene.innerHTML = html;
 	}
 	
-	/* Chrome: 510p @42fps
+	/* Chrome:
 	 * Firefox: 
 	 */
 	function renderHTMLRounded() {
@@ -209,8 +209,8 @@ function onload() {
 		scene.innerHTML = html;
 	}
 	
-	/* Chrome: 444p @37fps
-	 * Firefox: 290p @24fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function renderHTMLTransform() {
 		var html = "",
@@ -228,8 +228,8 @@ function onload() {
 		scene.innerHTML = html;
 	}
 	
-	/* Chrome: 444p @37fps
-	 * Firefox: 290p @24fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function renderHTMLTransformRounded() {
 		var html = "",
@@ -247,8 +247,8 @@ function onload() {
 		scene.innerHTML = html;
 	}
 	
-	/* Chrome: 1300p @42fps
-	 * Firefox: 770 @26fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function renderCanvas() {
 		var _ctx = ctx,
@@ -264,8 +264,8 @@ function onload() {
 		}
 	}
 	
-	/* Chrome: 1350p @45fps
-	 * Firefox: 1650 @56fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function renderCanvasRounded() {
 		var _ctx = ctx,
@@ -314,8 +314,8 @@ function onload() {
 		}
 	}
 	
-	/* Chrome: 480p @41fps
-	 * Firefox: 400p @33fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function renderStyle() {
 		var styleStr = "",
@@ -329,8 +329,8 @@ function onload() {
 		style.innerHTML = styleStr;
 	}
 	
-	/* Chrome: 510p @43fps
-	 * Firefox: 215p @10fps
+	/* Chrome:
+	 * Firefox:
 	 */
 	function renderStyleRounded() {
 		var styleStr = "",
@@ -344,7 +344,7 @@ function onload() {
 		style.innerHTML = styleStr;
 	}
 
-	/* Chrome: 430p @36fps
+	/* Chrome:
 	 * Firefox: 
 	 */
 	function renderStyleTransform() {
@@ -361,7 +361,7 @@ function onload() {
 		style.innerHTML = styleStr;
 	}
 	
-	/* Chrome: 340p @29fps
+	/* Chrome:
 	 * Firefox: 
 	 */
 	function renderStyleTransformRounded() {
