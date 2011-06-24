@@ -38,9 +38,8 @@ function onload() {
 
 	Fx.run([
 			stats
-		, renderStyleTransform
-		, animStyle
-		, spawnStyle
+		, animDOMTransform
+		, spawnDOM
 	]);
 	
 	function stats( dT, now ) {
@@ -81,18 +80,19 @@ function onload() {
 	}
 	
 	function spawnDOM() {
-		var node = document.createElement("div"), 
-			elem = {
-				style: {
-					width: 10,
-					height: 10,
-					top: 295,
-					left: 395
-				},
-				node: node
-			};
+		var elem = {
+			style: {
+				width: 10,
+				height: 10,
+				top: 295,
+				left: 395
+			},
+			node: document.createElement("div"),
+			speedX: (Math.random() * speedD |0 +minimumSpeed) * ((Math.random() +.5) |0 ? 1 : -1),
+			speedY: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1)
+		};
 		Fx.elems.push(elem);
-		scene.appendChild(node);
+		scene.appendChild(elem.node);
 	}
 	
 	/* Chrome: 870p @44fps
@@ -101,15 +101,15 @@ function onload() {
 	function animDOM( dT ) {
 		var elems = Fx.elems,
 			i = elems.length,
-			dX = 50 / 1000 * dT,
-			elem, node, val;
+			elem, node, x, y;
 		while ( i-- ) {
 			elem = elems[i];
 			node = elem.node;
-			val = elem.style.left += dX;
-			node.style.left = val + "px";
-			node.style.top = elem.style.top + "px";
-			if ( val > 590 ) {
+			x = elem.style.left += elem.speedX / 1000 * dT;
+			y = elem.style.top += elem.speedY / 1000 * dT;
+			node.style.left = x + "px";
+			node.style.top = y + "px";
+			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				scene.removeChild(node);
 				elems.splice(i, 1);
 			}
@@ -122,15 +122,15 @@ function onload() {
 	function animDOMRounded( dT ) {
 		var elems = Fx.elems,
 			i = elems.length,
-			dX = 50 / 1000 * dT,
-			elem, node, val;
+			elem, node, x, y;
 		while ( i-- ) {
 			elem = elems[i];
 			node = elem.node;
-			val = elem.style.left += dX;
-			node.style.left = ((val +.5) |0) + "px";
-			node.style.top = elem.style.top + "px";
-			if ( val > 590 ) {
+			x = elem.style.left += elem.speedX / 1000 * dT;
+			y = elem.style.top += elem.speedY / 1000 * dT;
+			node.style.left = ((x +.5) |0) + "px";
+			node.style.top = ((y +.5) |0) + "px";
+			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				scene.removeChild(node);
 				elems.splice(i, 1);
 			}
@@ -143,15 +143,15 @@ function onload() {
 	function animDOMTransform( dT ) {
 		var elems = Fx.elems,
 			i = elems.length,
-			dX = 50 / 1000 * dT,
-			elem, node, val,
-			trans = transform;
+			trans = transform,
+			elem, node, x, y;
 		while ( i-- ) {
 			elem = elems[i];
 			node = elem.node;
-			val = elem.style.left += dX;
-			node.style[trans.camel] = "translate("+ val + "px," + elem.style.top + "px)";
-			if ( val > 590 ) {
+			x = elem.style.left += elem.speedX / 1000 * dT;
+			y = elem.style.top += elem.speedY / 1000 * dT;
+			node.style[trans.camel] = "translate(" + x + "px," + y + "px)";
+			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				scene.removeChild(node);
 				elems.splice(i, 1);
 			}
@@ -164,15 +164,15 @@ function onload() {
 	function animDOMTransformRounded( dT ) {
 		var elems = Fx.elems,
 			i = elems.length,
-			dX = 50 / 1000 * dT,
-			elem, node, val,
-			trans = transform;
+			trans = transform,
+			elem, node, x, y;
 		while ( i-- ) {
 			elem = elems[i];
 			node = elem.node;
-			val = elem.style.left += dX;
-			node.style[trans.camel] = "translate("+ ((val +.5) |0) + "px," + ((elem.style.top +.5) |0) + "px)";
-			if ( val > 590 ) {
+			x = elem.style.left += elem.speedX / 1000 * dT;
+			y = elem.style.top += elem.speedY / 1000 * dT;
+			node.style[trans.camel] = "translate(" + ((x +.5) |0) + "px," + ((y +.5) |0) + "px)";
+			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				scene.removeChild(node);
 				elems.splice(i, 1);
 			}
