@@ -7,8 +7,7 @@ function onload() {
 		style = document.getElementById("sceneStyle"), 
 		ctx = canvas.getContext("2d"),
 		img = new Image(),
-		speedD = 50,
-		minimumSpeed = 20,
+		speedD = 40,
 		transform = {
 			propPrefix: "",
 			camel: "transform"
@@ -38,9 +37,8 @@ function onload() {
 
 	Fx.run([
 			stats
-		, renderHTMLRounded
-		, anim
-		, spawn
+		, animDOMTransformRounded
+		, spawnDOM
 	]);
 	
 	function stats( dT, now ) {
@@ -54,9 +52,9 @@ function onload() {
 	}
 	
 	function spawn() {
-		var speedX = Math.random() * speedD |0 +minimumSpeed,
+		var speedX = Math.random() * speedD * 4 |0,
 			speedY = Math.random() * speedD |0,
-			speedZ = speedX * speedX + speedY * speedY;
+			speedZ = speedX * speedX /3 + speedY * speedY;
 		Fx.elems.push({
 			style: {
 				width: 2,
@@ -86,17 +84,21 @@ function onload() {
 	}
 	
 	function spawnDOM() {
-		var elem = {
-			style: {
-				width: 10,
-				height: 10,
-				top: 295,
-				left: 395
-			},
-			node: document.createElement("div"),
-			speedX: (Math.random() * speedD |0 +minimumSpeed) * ((Math.random() +.5) |0 ? 1 : -1),
-			speedY: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1)
-		};
+		var speedX = Math.random() * speedD * 4 |0,
+			speedY = Math.random() * speedD |0,
+			speedZ = speedX * speedX /3 + speedY * speedY,
+			elem = {
+				style: {
+					width: 2,
+					height: 2,
+					top: 295,
+					left: 395
+				},
+				node: document.createElement("div"),
+				speedX: speedX * ((Math.random() +.5) |0 ? 1 : -1),
+				speedY: speedY * ((Math.random() +.5) |0 ? 1 : -1),
+				speedZ: speedZ /2E3
+			};
 		Fx.elems.push(elem);
 		scene.appendChild(elem.node);
 	}
@@ -107,14 +109,17 @@ function onload() {
 	function animDOM( dT ) {
 		var elems = Fx.elems,
 			i = elems.length,
-			elem, node, x, y;
+			elem, node, x, y, s;
 		while ( i-- ) {
 			elem = elems[i];
 			node = elem.node;
 			x = elem.style.left += elem.speedX / 1000 * dT;
 			y = elem.style.top += elem.speedY / 1000 * dT;
+			s = elem.style.width = elem.style.height += elem.speedZ / 1000 * dT;
 			node.style.left = x + "px";
 			node.style.top = y + "px";
+			node.style.width = s + "px";
+			node.style.height = s + "px";
 			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				scene.removeChild(node);
 				elems.splice(i, 1);
@@ -128,14 +133,17 @@ function onload() {
 	function animDOMRounded( dT ) {
 		var elems = Fx.elems,
 			i = elems.length,
-			elem, node, x, y;
+			elem, node, x, y, s;
 		while ( i-- ) {
 			elem = elems[i];
 			node = elem.node;
 			x = elem.style.left += elem.speedX / 1000 * dT;
 			y = elem.style.top += elem.speedY / 1000 * dT;
+			s = elem.style.width = elem.style.height += elem.speedZ / 1000 * dT;
 			node.style.left = ((x +.5) |0) + "px";
 			node.style.top = ((y +.5) |0) + "px";
+			node.style.width = ((s +.5) |0) + "px";
+			node.style.height = ((s +.5) |0) + "px";
 			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				scene.removeChild(node);
 				elems.splice(i, 1);
@@ -150,13 +158,14 @@ function onload() {
 		var elems = Fx.elems,
 			i = elems.length,
 			trans = transform,
-			elem, node, x, y;
+			elem, node, x, y, s;
 		while ( i-- ) {
 			elem = elems[i];
 			node = elem.node;
 			x = elem.style.left += elem.speedX / 1000 * dT;
 			y = elem.style.top += elem.speedY / 1000 * dT;
-			node.style[trans.camel] = "translate(" + x + "px," + y + "px)";
+			s = elem.style.width = elem.style.height += elem.speedZ / 1000 * dT;
+			node.style[trans.camel] = "translate(" + x + "px," + y + "px) scale("+ s +")";
 			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				scene.removeChild(node);
 				elems.splice(i, 1);
@@ -171,13 +180,14 @@ function onload() {
 		var elems = Fx.elems,
 			i = elems.length,
 			trans = transform,
-			elem, node, x, y;
+			elem, node, x, y, s;
 		while ( i-- ) {
 			elem = elems[i];
 			node = elem.node;
 			x = elem.style.left += elem.speedX / 1000 * dT;
 			y = elem.style.top += elem.speedY / 1000 * dT;
-			node.style[trans.camel] = "translate(" + ((x +.5) |0) + "px," + ((y +.5) |0) + "px)";
+			s = elem.style.width = elem.style.height += elem.speedZ / 1000 * dT;
+			node.style[trans.camel] = "translate(" + ((x +.5) |0) + "px," + ((y +.5) |0) + "px) scale("+ ((s +.5) |0) +")";
 			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				scene.removeChild(node);
 				elems.splice(i, 1);
@@ -226,11 +236,11 @@ function onload() {
 			elem,
 			htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
 			separator1 = 'px,',
-			
-			htmlSuffix = 'px)"></div>';
+			separator2 = 'px) scale(',
+			htmlSuffix = ')"></div>';
 		while ( i-- ) {
 			elem = elems[i];
-			html +=  htmlPrefix + elem.style.left + separator + elem.style.top + htmlSuffix;
+			html +=  htmlPrefix + elem.style.left + separator1 + elem.style.top + separator2 + elem.style.width + htmlSuffix;
 		}
 		scene.innerHTML = html;
 	}
@@ -245,11 +255,12 @@ function onload() {
 			i = elems.length,
 			elem,
 			htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
-			separator = 'px,',
-			htmlSuffix = 'px)"></div>';
+			separator1 = 'px,',
+			separator2 = 'px) scale(',
+			htmlSuffix = ')"></div>';
 		while ( i-- ) {
 			elem = elems[i];
-			html +=  htmlPrefix + ((elem.style.left +.5) |0) + separator + ((elem.style.top +.5) |0) + htmlSuffix;
+			html +=  htmlPrefix + ((elem.style.left +.5) |0) + separator1 + ((elem.style.top +.5) |0) + separator2 + ((elem.style.width +.5) |0) + htmlSuffix;
 		}
 		scene.innerHTML = html;
 	}
@@ -267,7 +278,7 @@ function onload() {
 		_ctx.clearRect(0,0,800,600);
 		while ( i-- ) {
 			elem = elems[i];
-			_ctx.drawImage(_img, elem.style.left, elem.style.top);
+			_ctx.drawImage(_img, elem.style.left, elem.style.top, elem.style.width, elem.style.height);
 		}
 	}
 	
@@ -284,20 +295,24 @@ function onload() {
 		_ctx.clearRect(0,0,800,600);
 		while ( i-- ) {
 			elem = elems[i];
-			_ctx.drawImage(_img, ((elem.style.left +.5) |0), ((elem.style.top +.5) |0));
+			_ctx.drawImage(_img, ((elem.style.left +.5) |0), ((elem.style.top +.5) |0), ((elem.style.width +.5) |0), ((elem.style.height +.5) |0));
 		}
 	}
 	
 	function spawnStyle() {
-		var elem = {
+		var speedX = Math.random() * speedD * 4 |0,
+			speedY = Math.random() * speedD |0,
+			speedZ = speedX * speedX /3 + speedY * speedY;
+			elem = {
 					style: {
-					width: 10,
-					height: 10,
+					width: 2,
+					height: 2,
 					top: 295,
 					left: 395
 				},
-				speedX: (Math.random() * speedD |0 +minimumSpeed) * ((Math.random() +.5) |0 ? 1 : -1),
-				speedY: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1),
+				speedX: speedX * ((Math.random() +.5) |0 ? 1 : -1),
+				speedY: speedY * ((Math.random() +.5) |0 ? 1 : -1),
+				speedZ: speedZ /2E3,
 				node: document.createElement("div"),
 				id: Math.random() * 1E9 |0
 			};
@@ -314,6 +329,7 @@ function onload() {
 			elem = elems[i];
 			x = elem.style.left += elem.speedX / 1000 * dT;
 			y = elem.style.top += elem.speedY / 1000 * dT;
+			elem.style.width = elem.style.height += elem.speedZ / 1000 * dT;
 			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				elems.splice(i, 1);
 				scene.removeChild(elem.node);
@@ -331,7 +347,7 @@ function onload() {
 			elem;
 		while ( i-- ) {
 			elem = elems[i];
-			styleStr += "#elem" + elem.id + "{left:" + elem.style.left + "px;top:" + elem.style.top + "px;}\n";
+			styleStr += "#elem" + elem.id + "{left:" + elem.style.left + "px;top:" + elem.style.top + "px;width:"+ elem.style.width +"px;height:"+ elem.style.height +"px;}\n";
 		}
 		style.innerHTML = styleStr;
 	}
@@ -346,7 +362,7 @@ function onload() {
 			elem;
 		while ( i-- ) {
 			elem = elems[i];
-			styleStr += "#elem" + elem.id + "{left:" + ((elem.style.left +.5) |0) + "px;top:" + ((elem.style.top +.5) |0) + "px;}\n";
+			styleStr += "#elem" + elem.id + "{left:" + ((elem.style.left +.5) |0) + "px;top:" + ((elem.style.top +.5) |0) + "px;width:"+ ((elem.style.width +.5) |0) +"px;height:"+ ((elem.style.height +.5) |0) + "px;}\n";
 		}
 		style.innerHTML = styleStr;
 	}
