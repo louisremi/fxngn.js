@@ -38,8 +38,9 @@ function onload() {
 
 	Fx.run([
 			stats
-		, animDOMTransform
-		, spawnDOM
+		, renderHTMLRounded
+		, anim
+		, spawn
 	]);
 	
 	function stats( dT, now ) {
@@ -53,15 +54,19 @@ function onload() {
 	}
 	
 	function spawn() {
+		var speedX = Math.random() * speedD |0 +minimumSpeed,
+			speedY = Math.random() * speedD |0,
+			speedZ = speedX * speedX + speedY * speedY;
 		Fx.elems.push({
 			style: {
-				width: 10,
-				height: 10,
+				width: 2,
+				height: 2,
 				top: 295,
 				left: 395
 			},
-			speedX: (Math.random() * speedD |0 +minimumSpeed) * ((Math.random() +.5) |0 ? 1 : -1),
-			speedY: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1)
+			speedX: speedX * ((Math.random() +.5) |0 ? 1 : -1),
+			speedY: speedY * ((Math.random() +.5) |0 ? 1 : -1),
+			speedZ: speedZ /2E3
 		});
 	}
 	
@@ -73,6 +78,7 @@ function onload() {
 			elem = elems[i];
 			x = elem.style.left += elem.speedX / 1000 * dT;
 			y = elem.style.top += elem.speedY / 1000 * dT;
+			elem.style.width = elem.style.height += elem.speedZ / 1000 * dT;
 			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				elems.splice(i, 1);
 			}
@@ -189,7 +195,7 @@ function onload() {
 			elem;
 		while ( i-- ) {
 			elem = elems[i];
-			html += '<div style="top:'+elem.style.top+'px;left:'+elem.style.left+'px"></div>';
+			html += '<div style="top:'+elem.style.top+'px;left:'+elem.style.left+'px;width:'+elem.style.width+'px;height:'+elem.style.height+'px;"></div>';
 		}
 		scene.innerHTML = html;
 	}
@@ -204,7 +210,7 @@ function onload() {
 			elem;
 		while ( i-- ) {
 			elem = elems[i];
-			html += '<div style="top:'+((elem.style.top +.5) |0)+'px;left:'+((elem.style.left +.5) |0)+'px"></div>';
+			html += '<div style="top:'+((elem.style.top +.5) |0)+'px;left:'+((elem.style.left +.5) |0)+'px;width:'+((elem.style.width +.5) |0)+'px;height:'+((elem.style.height +.5) |0)+'px;"></div>';
 		}
 		scene.innerHTML = html;
 	}
@@ -219,7 +225,8 @@ function onload() {
 			i = elems.length,
 			elem,
 			htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
-			separator = 'px,';
+			separator1 = 'px,',
+			
 			htmlSuffix = 'px)"></div>';
 		while ( i-- ) {
 			elem = elems[i];
@@ -238,7 +245,7 @@ function onload() {
 			i = elems.length,
 			elem,
 			htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
-			separator = 'px,';
+			separator = 'px,',
 			htmlSuffix = 'px)"></div>';
 		while ( i-- ) {
 			elem = elems[i];
