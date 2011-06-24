@@ -7,7 +7,8 @@ function onload() {
 		style = document.getElementById("sceneStyle"), 
 		ctx = canvas.getContext("2d"),
 		img = new Image(),
-		speedD = 100,
+		speedD = 50,
+		minimumSpeed = 20,
 		transform = {
 			propPrefix: "",
 			camel: "transform"
@@ -37,16 +38,16 @@ function onload() {
 
 	Fx.run([
 			stats
-		, spawn
-		, anim
-		, renderHTML
+		, renderStyleTransform
+		, animStyle
+		, spawnStyle
 	]);
 	
 	function stats( dT, now ) {
 		var sec = now - before;
 		frames++;
 		if ( sec >= 1000 ) {
-			statsDiv.innerHTML = "fps: " + ( (frames / sec * 1000) |0) + "<br/>elems: " + (scene.childNodes.length);
+			statsDiv.innerHTML = "fps: " + ( (frames / sec * 1000) |0) + "<br/>elems: " + (Fx.elems.length);
 			before = now;
 			frames = sec = 0;
 		}
@@ -60,7 +61,7 @@ function onload() {
 				top: 295,
 				left: 395
 			},
-			speedX: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1),
+			speedX: (Math.random() * speedD |0 +minimumSpeed) * ((Math.random() +.5) |0 ? 1 : -1),
 			speedY: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1)
 		});
 	}
@@ -85,29 +86,12 @@ function onload() {
 				style: {
 					width: 10,
 					height: 10,
-					top: Math.random() * 590,
-					left: 0
+					top: 295,
+					left: 395
 				},
 				node: node
 			};
 		Fx.elems.push(elem);
-		node.style.top = elem.style.top + "px";
-		scene.appendChild(node);
-	}
-	
-	function spawnDOMTransform() {
-		var node = document.createElement("div"), 
-			elem = {
-				style: {
-					width: 10,
-					height: 10,
-					top: Math.random() * 590,
-					left: 0
-				},
-				node: node
-			};
-		Fx.elems.push(elem);
-		node.style[transform.camel] = "translate(0px," + elem.style.top +"px)";
 		scene.appendChild(node);
 	}
 	
@@ -273,7 +257,7 @@ function onload() {
 			i = elems.length,
 			elem;
 
-		_ctx.clearRect(0,0,600,400);
+		_ctx.clearRect(0,0,800,600);
 		while ( i-- ) {
 			elem = elems[i];
 			_ctx.drawImage(_img, elem.style.left, elem.style.top);
@@ -290,7 +274,7 @@ function onload() {
 			i = elems.length,
 			elem;
 
-		_ctx.clearRect(0,0,600,400);
+		_ctx.clearRect(0,0,800,600);
 		while ( i-- ) {
 			elem = elems[i];
 			_ctx.drawImage(_img, ((elem.style.left +.5) |0), ((elem.style.top +.5) |0));
@@ -299,12 +283,14 @@ function onload() {
 	
 	function spawnStyle() {
 		var elem = {
-				style: {
+					style: {
 					width: 10,
 					height: 10,
-					top: Math.random() * 390,
-					left: 0
+					top: 295,
+					left: 395
 				},
+				speedX: (Math.random() * speedD |0 +minimumSpeed) * ((Math.random() +.5) |0 ? 1 : -1),
+				speedY: (Math.random() * speedD |0) * ((Math.random() +.5) |0 ? 1 : -1),
 				node: document.createElement("div"),
 				id: Math.random() * 1E9 |0
 			};
@@ -316,12 +302,12 @@ function onload() {
 	function animStyle( dT ) {
 		var elems = Fx.elems,
 			i = elems.length,
-			dX = 50 / 1000 * dT,
-			elem, val;
+			elem, x, y;
 		while ( i-- ) {
 			elem = elems[i];
-			val = elem.style.left += dX;
-			if ( val > 590 ) {
+			x = elem.style.left += elem.speedX / 1000 * dT;
+			y = elem.style.top += elem.speedY / 1000 * dT;
+			if ( x < 0 || y < 0 || x > 790 || y > 590 ) {
 				elems.splice(i, 1);
 				scene.removeChild(elem.node);
 			}
