@@ -8,6 +8,7 @@ html {
 }
 
 #scene {
+	display: none;
 	position: relative;
 	width: 800px;
 	height: 600px;
@@ -44,5 +45,20 @@ html {
 <div id="stats"></div>
 <script src="fxngn.js"></script>
 <script src="logic.js"></script>
+<script>
+function onload() {
+	
+Fx.load([
+	"point.png"
+]);
+
+Fx.run( initDOM, [
+		stats
+	, updateDOMTransformRounded
+	, spawnDOM
+]);
+
+}
+</script>
 </body>
 </html>

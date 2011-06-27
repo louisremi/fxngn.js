@@ -1,11 +1,12 @@
 (function(window, document, Math, Date, undefined) {
 
 var fx = {
-	run: function( utils ) {
+	run: function( init, utils ) {
 		this.before = Date.now();
+		typeof init === "function" ? init() : utils = init;
 		this.utils = utils;
 		var self = this,
-			requestAnimationFrame = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+			requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
 
 		if ( requestAnimationFrame ) {
 			raf = function( now ) {
@@ -28,8 +29,30 @@ var fx = {
 		}
 		this.before = now;
 	},
+	// from Paul Irish's imgesloaded: https://gist.github.com/268257/
+	load: function( assets, callback ) {
+		var i = assets.length,
+			total = i,
+			count = 0,
+			img;
+		while ( i-- ) {
+			img = new Image();
+			img.load = function() {
+				count++;
+				if ( count === total ) {
+					callback();
+				}
+			}
+			img = assets[i];
+			if ( img.complete || img.complete === undefined ) {
+				img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+				img.src = assets[i];
+			}
+		}
+	},
 	utils: [],
-	elems: []
+	elems: [],
+	support: {}
 }
 
 window.Fx = fx;
