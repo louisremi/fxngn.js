@@ -51,8 +51,7 @@ var fx = {
 		}
 	},
 	utils: [],
-	elems: [],
-	support: {}
+	elems: []
 }
 
 window.Fx = fx;

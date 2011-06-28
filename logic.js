@@ -14,6 +14,14 @@ function stats( dT, now ) {
 	}
 }
 
+function reset() {
+	Fx.utils = [];
+	Fx.elems = [];
+	if ( "innerHTML" in scene ) {
+		scene.innerHTML = "";
+	}
+}
+
 function initDOM() {
 	window.scene = document.getElementById("scene");
 	window.style = document.getElementById("sceneStyle");
@@ -43,7 +51,13 @@ function initDOM() {
 
 	}
 
-	window.speedD = 40;
+	window.speedD = 20;
+}
+
+function initFragment() {
+	initDOM();
+	window._scene = scene;
+	window.scene = document.createDocumentFragment();
 }
 
 function initCanvas() {
@@ -51,7 +65,10 @@ function initCanvas() {
 	canvas.style.display = "block";
 	window.scene = canvas.getContext("2d");
 	
-	window.speedD = 20;
+	window.img = new Image();
+	window.img.src = "point.png";
+	
+	window.speedD = 10;
 }
 
 function spawn() {
@@ -84,6 +101,13 @@ function update( dT ) {
 			elems.splice(i, 1);
 		}
 	}
+}
+
+function detach() {
+	document.body.removeChild(scene);
+}
+function attach() {
+	document.body.appendChild(scene)
 }
 
 function spawnDOM() {
@@ -198,6 +222,11 @@ function updateDOMTransformRounded( dT ) {
 	}
 }
 
+function renderFragment() {
+	_scene.innerHTML = "";
+	_scene.appendChild(scene.cloneNode(true));
+}
+
 /* Chrome:
  * Firefox: 
  */
@@ -272,7 +301,7 @@ function renderHTMLTransformRounded() {
  * Firefox:
  */
 function renderCanvas() {
-	var _ctx = ctx,
+	var _ctx = scene,
 		_img = img,
 		elems = Fx.elems,
 		i = elems.length,
@@ -289,7 +318,7 @@ function renderCanvas() {
  * Firefox:
  */
 function renderCanvasRounded() {
-	var _ctx = ctx,
+	var _ctx = scene,
 		_img = img,
 		elems = Fx.elems,
 		i = elems.length,

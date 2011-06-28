@@ -52,10 +52,12 @@ Fx.load([
 	"point.png"
 ]);
 
-Fx.run( initDOM, [
+Fx.run( initCanvas, [
 		stats
-	, updateDOMTransformRounded
-	, spawnDOM
+	, renderCanvasRounded
+	, update
+	, spawn
+	//, detach
 ]);
 
 }
