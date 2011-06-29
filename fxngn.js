@@ -1,12 +1,12 @@
 (function(window, document, Math, Date, undefined) {
 
 var fx = {
-	run: function( init, utils ) {
+	run: function( init, utils, noRaf ) {
 		this.before = Date.now();
 		typeof init === "function" ? init() : utils = init;
 		this.utils = utils;
 		var self = this,
-			requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+			requestAnimationFrame = !noRaf && (window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame);
 
 		if ( requestAnimationFrame ) {
 			raf = function( now ) {
@@ -29,7 +29,7 @@ var fx = {
 		}
 		this.before = now;
 	},
-	// from Paul Irish's imgesloaded: https://gist.github.com/268257/
+	// from Paul Irish's imagesloaded: https://gist.github.com/268257/
 	load: function( assets, callback ) {
 		var i = assets.length,
 			total = i,
@@ -37,13 +37,13 @@ var fx = {
 			img;
 		while ( i-- ) {
 			img = new Image();
-			img.load = function() {
+			img.onload = function() {
 				count++;
 				if ( count === total ) {
 					callback();
 				}
 			}
-			img = assets[i];
+			img.src = assets[i];
 			if ( img.complete || img.complete === undefined ) {
 				img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 				img.src = assets[i];
