@@ -36,8 +36,12 @@ window.Fx = {
 		this.before = now;
 	},
 
-	stop: function() {
-		this.loop = function() {};
+	// The stop function takes a callback
+	// because it doesn't stop immediatly
+	// to save 1 test and 1 lookup inside the animation loop.
+	// Over-optimization FTW.
+	stop: function( callback ) {
+		this.loop = callback || function() {};
 		this.utils = [];
 		this.elems = [];
 	},

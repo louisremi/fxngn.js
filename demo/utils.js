@@ -15,7 +15,7 @@ function stats( dT, now ) {
 }
 
 function reset() {
-	Fx.stop();
+	Fx.stop( start );
 
 	if ( window.scene && "innerHTML" in scene ) {
 		scene.innerHTML = "";
@@ -47,14 +47,14 @@ function prepareControls() {
 		var target = e.target;
 		if ( target.nodeName.toLocaleLowerCase() === "label" ) {
 			target = $(target.getAttribute("for"));
-		}if ( target.nodeName.toLocaleLowerCase() === "input" && !target.disabled ) {
+		}
+		if ( target.nodeName.toLocaleLowerCase() === "input" && !target.disabled ) {
 			reset();
-			start();
 		}
 	}, true);
 }
 
-function $ (id) {
+function $( id ) {
 	return document.getElementById(id);
 }
 
@@ -134,7 +134,5 @@ function start() {
 	
 	utils.unshift( stats );
 
-	setTimeout( function() {
-		Fx.run( init, utils, !raf.checked );
-	}, 100);
+	Fx.run( init, utils, !raf.checked );
 }
