@@ -6,24 +6,22 @@ window.Fx = {
 		typeof init === "function" ? init() : utils = init;
 		this.utils = utils;
 		var self = this,
-			loop,
 			requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
 
 		if ( !noRaf && requestAnimationFrame ) {
-			loop = function( now ) {
-				requestAnimationFrame( loop );
+			this.loop = function( now ) {
+				requestAnimationFrame( self.loop );
 				self.tick( now );
 			}
-			requestAnimationFrame( loop );
+			requestAnimationFrame( this.loop );
 
 		} else {
-			loop = function() {
-				setTimeout( loop, 16 );
+			this.loop = function() {
+				setTimeout( self.loop, 16 );
 				self.tick();
 			}
-			setTimeout( loop, 16 );
+			setTimeout( this.loop, 16 );
 		}
-		this.loop = loop;
 	},
 
 	tick: function( now ) {

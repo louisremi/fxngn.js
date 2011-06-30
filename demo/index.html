@@ -26,8 +26,19 @@ html {
 	border: 1px solid black;
 }
 
+#controls {
+	font-family: Arial, Helvetica, "Liberation Sans", sans-serif;
+	font-size: 12px;
+	width: 800px;
+}
 #controls div {
 	display: inline-block;
+}
+#stats {
+	font-size: 16px;
+	font-weight: bold;
+	width: 100px;
+	float: right;
 }
 </style>
 </head>
@@ -48,11 +59,11 @@ html {
 	</div>
 	<div>
 		<input id="fragment" value="fragment" name="style" type="checkbox" /><label for="fragment">Document Fragment</label><br />
-		<input id="transform" value="transform" name="style" type="checkbox" /><label for="transform">CSS3 Transform</label><br />
+		<input id="transform" value="transform" name="style" type="checkbox" /><label for="transform">CSS3 Transform</label><br />&nbsp;
 	</div>
 	<div>
-		<!--<input id="raf" type="checkbox" /><label for="raf">requestAnimationFrame</label>-->
-		<input id="round" type="checkbox" /><label for="round">Round values</label>
+		<input id="raf" type="checkbox" checked /><label for="raf">requestAnimationFrame</label><br/>
+		<input id="round" type="checkbox" /><label for="round">Round values</label><br/>&nbsp;
 	</div>
 	<div id="stats"></div>
 </form>

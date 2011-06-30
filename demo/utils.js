@@ -15,6 +15,8 @@ function stats( dT, now ) {
 }
 
 function reset() {
+	Fx.stop();
+
 	if ( window.scene && "innerHTML" in scene ) {
 		scene.innerHTML = "";
 		scene.style.display = "none";
@@ -27,6 +29,9 @@ function reset() {
 	if ( window._scene ) {
 		_scene.innerHTML = "";
 		_scene.style.display = "none";
+	}
+	if ( window.statsDiv ) {
+		statsDiv.innerHTML = "";
 	}
 }
 
@@ -62,6 +67,7 @@ function start() {
 		style = $("styl"),
 		fragment = $("fragment"),
 		transform = $("transform"),
+		raf = $("raf"),
 		round = $("round");
 	var utils = [],
 		init, tmp;
@@ -128,5 +134,7 @@ function start() {
 	
 	utils.unshift( stats );
 
-	Fx.run( init, utils );
+	setTimeout( function() {
+		Fx.run( init, utils, !raf.checked );
+	}, 100);
 }
