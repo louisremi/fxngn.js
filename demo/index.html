@@ -17,8 +17,104 @@ html {
 
 #scene div {
 	position: absolute;
-	background: url("point.png");
 	background-size: 100%;
+}
+
+#scene .square7 {
+	background-image: url("sprites/square7.png");
+}
+#scene .diamond7 {
+	background-image: url("sprites/diamond7.png");
+}
+#scene .circle7 {
+	background-image: url("sprites/circle7.png");
+}
+#scene .star7 {
+	background-image: url("sprites/star7.png");
+}
+#scene .square39 {
+	background-image: url("sprites/square39.png");
+}
+#scene .diamond39 {
+	background-image: url("sprites/diamond39.png");
+}
+#scene .circle39 {
+	background-image: url("sprites/circle39.png");
+}
+#scene .star39 {
+	background-image: url("sprites/star39.png");
+}
+#scene .square71 {
+	background-image: url("sprites/square71.png");
+}
+#scene .diamond71 {
+	background-image: url("sprites/diamond71.png");
+}
+#scene .circle71 {
+	background-image: url("sprites/circle71.png");
+}
+#scene .star71 {
+	background-image: url("sprites/star71.png");
+}
+#scene .square103 {
+	background-image: url("sprites/square103.png");
+}
+#scene .diamond103 {
+	background-image: url("sprites/diamond103.png");
+}
+#scene .circle103 {
+	background-image: url("sprites/circle103.png");
+}
+#scene .star103 {
+	background-image: url("sprites/star103.png");
+}
+#scene .square135 {
+	background-image: url("sprites/square135.png");
+}
+#scene .diamond135 {
+	background-image: url("sprites/diamond135.png");
+}
+#scene .circle135 {
+	background-image: url("sprites/circle135.png");
+}
+#scene .star135 {
+	background-image: url("sprites/star135.png");
+}
+#scene .square167 {
+	background-image: url("sprites/square167.png");
+}
+#scene .diamond167 {
+	background-image: url("sprites/diamond167.png");
+}
+#scene .circle167 {
+	background-image: url("sprites/circle167.png");
+}
+#scene .star167 {
+	background-image: url("sprites/star167.png");
+}
+#scene .square199 {
+	background-image: url("sprites/square199.png");
+}
+#scene .diamond199 {
+	background-image: url("sprites/diamond199.png");
+}
+#scene .circle199 {
+	background-image: url("sprites/circle199.png");
+}
+#scene .star199 {
+	background-image: url("sprites/star199.png");
+}
+#scene .square230 {
+	background-image: url("sprites/square230.png");
+}
+#scene .diamond230 {
+	background-image: url("sprites/diamond230.png");
+}
+#scene .circle230 {
+	background-image: url("sprites/circle230.png");
+}
+#scene .star230 {
+	background-image: url("sprites/star230.png");
 }
 
 #canvas {
@@ -80,6 +176,28 @@ prepareControls();
 start();
 
 }
+
+var hues = [7, 39, 71, 103, 135, 167, 199, 230],
+	shapes = ["square", "diamond", "circle", "star"],
+	i = hues.length,
+	j = shapes.length,
+	graphics = [],
+	hue, shape, _j, name, img;
+
+while ( i-- ) {
+	hue = hues[i];
+	_j = j;
+	while ( _j-- ) {
+		shape = shapes[_j];
+		name = shape + hue;
+		img = new Image();
+		img.src = "sprites/" + name + ".png";
+		graphics.push( [name, img] );
+	}
+}
+
+window.graphics = graphics;
+
 </script>
 </body>
 </html>

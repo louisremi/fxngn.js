@@ -13,7 +13,7 @@ function renderHTML() {
 		elem;
 	while ( i-- ) {
 		elem = elems[i];
-		html += '<div style="top:'+elem.style.top+'px;left:'+elem.style.left+'px;width:'+elem.style.width+'px;height:'+elem.style.height+'px;"></div>';
+		html += '<div class="'+elem.sprite[0]+'" style="top:'+elem.style.top+'px;left:'+elem.style.left+'px;width:'+elem.style.width+'px;height:'+elem.style.height+'px;"></div>';
 	}
 	scene.innerHTML = html;
 }
@@ -28,7 +28,7 @@ function renderHTMLRounded() {
 		elem;
 	while ( i-- ) {
 		elem = elems[i];
-		html += '<div style="top:'+((elem.style.top +.5) |0)+'px;left:'+((elem.style.left +.5) |0)+'px;width:'+((elem.style.width +.5) |0)+'px;height:'+((elem.style.height +.5) |0)+'px;"></div>';
+		html += '<div class="'+elem.sprite[0]+'" style="top:'+((elem.style.top +.5) |0)+'px;left:'+((elem.style.left +.5) |0)+'px;width:'+((elem.style.width +.5) |0)+'px;height:'+((elem.style.height +.5) |0)+'px;"></div>';
 	}
 	scene.innerHTML = html;
 }
@@ -42,13 +42,14 @@ function renderHTMLTransform() {
 		elems = Fx.elems,
 		i = elems.length,
 		elem,
-		htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
+		htmlPrefix = '<div class="',
+		separator0 = '" style="' + trans.propPrefix + 'transform:translate(',
 		separator1 = 'px,',
 		separator2 = 'px) scale(',
 		htmlSuffix = ')"></div>';
 	while ( i-- ) {
 		elem = elems[i];
-		html +=  htmlPrefix + elem.style.left + separator1 + elem.style.top + separator2 + elem.style.width + htmlSuffix;
+		html +=  htmlPrefix + elem.sprite[0] + separator0 + elem.style.left + separator1 + elem.style.top + separator2 + elem.style.width + htmlSuffix;
 	}
 	scene.innerHTML = html;
 }
@@ -62,13 +63,14 @@ function renderHTMLTransformRounded() {
 		elems = Fx.elems,
 		i = elems.length,
 		elem,
-		htmlPrefix = '<div style="' + trans.propPrefix + 'transform:translate(',
+		htmlPrefix = '<div class="',
+		separator0 = '" style="' + trans.propPrefix + 'transform:translate(',
 		separator1 = 'px,',
 		separator2 = 'px) scale(',
 		htmlSuffix = ')"></div>';
 	while ( i-- ) {
 		elem = elems[i];
-		html +=  htmlPrefix + ((elem.style.left +.5) |0) + separator1 + ((elem.style.top +.5) |0) + separator2 + ((elem.style.width +.5) |0) + htmlSuffix;
+		html +=  htmlPrefix + elem.sprite[0] + separator0 + ((elem.style.left +.5) |0) + separator1 + ((elem.style.top +.5) |0) + separator2 + ((elem.style.width +.5) |0) + htmlSuffix;
 	}
 	scene.innerHTML = html;
 }
@@ -78,7 +80,6 @@ function renderHTMLTransformRounded() {
  */
 function renderCanvas() {
 	var _ctx = scene,
-		_img = img,
 		elems = Fx.elems,
 		i = elems.length,
 		elem;
@@ -86,7 +87,7 @@ function renderCanvas() {
 	_ctx.clearRect(0,0,800,600);
 	while ( i-- ) {
 		elem = elems[i];
-		_ctx.drawImage(_img, elem.style.left, elem.style.top, elem.style.width, elem.style.height);
+		_ctx.drawImage(elem.sprite[1], elem.style.left, elem.style.top, elem.style.width, elem.style.height);
 	}
 }
 
@@ -95,7 +96,6 @@ function renderCanvas() {
  */
 function renderCanvasRounded() {
 	var _ctx = scene,
-		_img = img,
 		elems = Fx.elems,
 		i = elems.length,
 		elem;
@@ -103,7 +103,7 @@ function renderCanvasRounded() {
 	_ctx.clearRect(0,0,800,600);
 	while ( i-- ) {
 		elem = elems[i];
-		_ctx.drawImage(_img, ((elem.style.left +.5) |0), ((elem.style.top +.5) |0), ((elem.style.width +.5) |0), ((elem.style.height +.5) |0));
+		_ctx.drawImage(elem.sprite[1], ((elem.style.left +.5) |0), ((elem.style.top +.5) |0), ((elem.style.width +.5) |0), ((elem.style.height +.5) |0));
 	}
 }
 

@@ -10,6 +10,7 @@ function spawn() {
 			top: 295,
 			left: 395
 		},
+		sprite: graphics[ Math.random() * 32 |0 ],
 		speedX: speedX * ((Math.random() +.5) |0 ? 1 : -1),
 		speedY: speedY * ((Math.random() +.5) |0 ? 1 : -1),
 		speedZ: speedZ /2E3 * ( 40 / spdD )
@@ -33,6 +34,7 @@ function spawnDOM() {
 			speedY: speedY * ((Math.random() +.5) |0 ? 1 : -1),
 			speedZ: speedZ /2E3 * ( 40 / spdD )
 		};
+	elem.node.className = graphics[ Math.random() * 32 |0 ][0];
 	Fx.elems.push(elem);
 	scene.appendChild(elem.node);
 }
@@ -56,6 +58,7 @@ function spawnStyle() {
 			id: Math.random() * 1E9 |0
 		};
 	elem.node.id = "elem" + elem.id;
+	elem.node.className = graphics[ Math.random() * 32 |0 ][0];
 	Fx.elems.push(elem);
 	scene.appendChild(elem.node);
 }
