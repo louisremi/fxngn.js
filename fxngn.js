@@ -6,7 +6,9 @@ window.Fx = {
 		typeof init === "function" ? init() : utils = init;
 		this.utils = utils;
 		var self = this,
-			requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+			requestAnimationFrame =
+				window.mozRequestAnimationFrame ||
+				window.webkitRequestAnimationFrame;
 
 		if ( !noRaf && requestAnimationFrame ) {
 			this.loop = function( now ) {
@@ -36,9 +38,9 @@ window.Fx = {
 		this.before = now;
 	},
 
-	// The stop function takes a callback
-	// because it doesn't stop immediatly
-	// to save 1 test and 1 lookup inside the animation loop.
+	// The stop function takes an optional callback
+	// because it doesn't stop immediatly.
+	// This saves 1 test and 1 lookup inside the animation loop.
 	// Over-optimization FTW.
 	stop: function( callback ) {
 		this.loop = callback || function() {};

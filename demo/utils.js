@@ -8,7 +8,7 @@ function stats( dT, now ) {
 	var sec = now - before;
 	frames++;
 	if ( sec >= 1000 ) {
-		statsDiv.innerHTML = "fps: " + ( (frames / sec * 1000) |0) + "<br/>elems: " + (Fx.elems.length);
+		statsDiv.innerHTML = "fps: " + ( (frames / sec * 1000) |0) + "<br/><b>elems: " + Fx.elems.length + "</b>";
 		before = now;
 		frames = 0;
 	}
