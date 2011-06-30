@@ -23,16 +23,11 @@ html {
 
 #canvas {
 	display: none;
-	position: absolute;
-	top: 0;
-	left: 0;
 	border: 1px solid black;
 }
 
-#stats {
-	position: absolute;
-	top: 0;
-	left: 820px;
+#controls div {
+	display: inline-block;
 }
 </style>
 </head>
@@ -40,7 +35,27 @@ html {
 <style id="sceneStyle"></style>
 <div id="scene"></div>
 <canvas id="canvas" width="800" height="600"></canvas>
-<div id="stats"></div>
+<form id="controls">
+	<div>
+		<input id="dom" value="dom" name="backend" type="radio" checked /><label for="dom">DOM</label><br />
+		<input id="cnvs" value="canvas" name="backend" type="radio" /><label for="cnvs">Canvas</label><br />
+		<input id="webgl" value="webgl" name="backend" type="radio" disabled /><label for="webgl">WebGL</label>
+	</div>
+	<div>
+		<input id="domanip" value="dom" name="variant" type="radio" checked /><label for="domanip">DOM Manipulation</label><br />
+		<input id="html" value="html" name="variant" type="radio" /><label for="html">HTML Generation</label><br />
+		<input id="styl" value="style" name="variant" type="radio" /><label for="styl">Style Generation</label>
+	</div>
+	<div>
+		<input id="fragment" value="fragment" name="style" type="checkbox" /><label for="fragment">Document Fragment</label><br />
+		<input id="transform" value="transform" name="style" type="checkbox" /><label for="transform">CSS3 Transform</label><br />
+	</div>
+	<div>
+		<!--<input id="raf" type="checkbox" /><label for="raf">requestAnimationFrame</label>-->
+		<input id="round" type="checkbox" /><label for="round">Round values</label>
+	</div>
+	<div id="stats"></div>
+</form>
 <script src="../fxngn.js"></script>
 <script src="utils.js"></script>
 <script src="init.js"></script>
@@ -49,18 +64,10 @@ html {
 <script src="render.js"></script>
 <script>
 function onload() {
-	
-Fx.load([
-	"point.png"
-]);
 
-Fx.run( initDOM, [
-		stats
-	, renderStyleRounded
-	, updateStyle
-	, spawnStyle
-	//, detach
-]);
+prepareControls();
+
+start();
 
 }
 </script>

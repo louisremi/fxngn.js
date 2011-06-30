@@ -1,42 +1,59 @@
 (function(window, document, Math, Date, undefined) {
 
-var fx = {
+window.Fx = {
 	run: function( init, utils, noRaf ) {
 		this.before = Date.now();
 		typeof init === "function" ? init() : utils = init;
 		this.utils = utils;
 		var self = this,
-			requestAnimationFrame = !noRaf && (window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame);
+			loop,
+			requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
 
-		if ( requestAnimationFrame ) {
-			raf = function( now ) {
-				requestAnimationFrame( raf );
+		if ( !noRaf && requestAnimationFrame ) {
+			loop = function( now ) {
+				requestAnimationFrame( loop );
 				self.tick( now );
 			}
-			requestAnimationFrame( raf );
+			requestAnimationFrame( loop );
 
 		} else {
-			setInterval( this.tick, 16 );
+			loop = function() {
+				setTimeout( loop, 16 );
+				self.tick();
+			}
+			setTimeout( loop, 16 );
 		}
+		this.loop = loop;
 	},
+
 	tick: function( now ) {
 		now = now || Date.now();
-		var dT = Math.min( now - this.before, 60 ),
-			i = this.utils.length;
+		var utils = this.utils,
+			dT = Math.min( now - this.before, 60 ),
+			i = utils.length;
 
 		while ( i-- ) {
-			this.utils[i]( dT, now );
+			utils[i]( dT, now );
 		}
 		this.before = now;
 	},
+
+	stop: function() {
+		this.loop = function() {};
+		this.utils = [];
+		this.elems = [];
+	},
+
 	// from Paul Irish's imagesloaded: https://gist.github.com/268257/
 	load: function( assets, callback ) {
 		var i = assets.length,
 			total = i,
 			count = 0,
 			img;
+
 		while ( i-- ) {
 			img = new Image();
+
 			img.onload = function() {
 				count++;
 				if ( count === total ) {
@@ -44,16 +61,16 @@ var fx = {
 				}
 			}
 			img.src = assets[i];
+
 			if ( img.complete || img.complete === undefined ) {
 				img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 				img.src = assets[i];
 			}
 		}
 	},
+
 	utils: [],
 	elems: []
 }
-
-window.Fx = fx;
 
 })(window, document, Math, Date);
