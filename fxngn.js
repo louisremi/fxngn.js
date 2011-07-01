@@ -6,36 +6,26 @@ window.Fx = {
 		typeof init === "function" ? init() : utils = init;
 		this.utils = utils;
 		var self = this,
-			requestAnimationFrame =
+			requestAnimationFrame = (!noRaf &&
 				window.mozRequestAnimationFrame ||
-				window.webkitRequestAnimationFrame;
+				window.webkitRequestAnimationFrame ||
+				window.msRequestAnimationFrame) ||
+				setTimeout;
 
-		if ( !noRaf && requestAnimationFrame ) {
-			this.loop = function( now ) {
-				requestAnimationFrame( self.loop );
-				self.tick( now );
+		this.loop = function() {
+			requestAnimationFrame( self.loop, 16 );
+
+			var now = Date.now(),
+				dT = Math.min( now - self.before, 60 ),
+				utils = self.utils,
+				i = utils.length;
+
+			while ( i-- ) {
+				utils[i]( dT, now );
 			}
-			requestAnimationFrame( this.loop );
-
-		} else {
-			this.loop = function() {
-				setTimeout( self.loop, 16 );
-				self.tick();
-			}
-			setTimeout( this.loop, 16 );
+			self.before = now;
 		}
-	},
-
-	tick: function( now ) {
-		now = now || Date.now();
-		var utils = this.utils,
-			dT = Math.min( now - this.before, 60 ),
-			i = utils.length;
-
-		while ( i-- ) {
-			utils[i]( dT, now );
-		}
-		this.before = now;
+		requestAnimationFrame( this.loop, 16 );
 	},
 
 	// The stop function takes an optional callback
