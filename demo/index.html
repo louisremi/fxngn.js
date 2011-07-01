@@ -171,10 +171,13 @@ html {
 <script>
 function onload() {
 
+Fx.load( assets, function() {
+
 prepareControls();
 
 start();
 
+});
 }
 
 var hues = [7, 39, 71, 103, 135, 167, 199, 230],
@@ -182,6 +185,7 @@ var hues = [7, 39, 71, 103, 135, 167, 199, 230],
 	i = hues.length,
 	j = shapes.length,
 	graphics = [],
+	assets = [],
 	hue, shape, _j, name, img;
 
 while ( i-- ) {
@@ -192,6 +196,7 @@ while ( i-- ) {
 		name = shape + hue;
 		img = new Image();
 		img.src = "sprites/" + name + ".png";
+		assets.push( "sprites/" + name + ".png" );
 		graphics.push( [name, img] );
 	}
 }
